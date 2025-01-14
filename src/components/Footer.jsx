@@ -6,7 +6,7 @@ function Footer() {
         Made with{" "}
         <span>
           <i
-            className="ri-heart-3-fill lg:text-2xl text-xl text-[#ffffff]"
+            className="ri-heart-3-fill lg:text-2xl text-xl  dark:text-[#ffffff] text-[#000000] transition-all duration-300"
             style={{
               textShadow: "rgb(210, 175, 118) 0px 0px 20px",
             }}
@@ -16,7 +16,7 @@ function Footer() {
       <h1 className="flex items-center lg:gap-2 gap-1">
         by{" "}
         <span
-          className="font-jose lg:text-5xl text-3xl md:text-4xl text-[#ffffff]"
+          className="font-jose lg:text-5xl text-3xl md:text-4xl dark:text-[#ffffff] text-[#000000] transition-all duration-300"
           style={{
             textShadow: "rgb(210, 175, 118) 0px 0px 20px",
           }}
@@ -25,7 +25,7 @@ function Footer() {
         </span>
         <span className="w-3 h-3 bg-[#a33b3b] rounded-full lg:mt-3"></span>
       </h1>
-      <h1 className="text-xs lg:text-sm text-[#999999] mt-2 lg:mt-4">
+      <h1 className="text-xs lg:text-sm  dark:text-[#737373] text-[#737373] transition-all duration-300 mt-2 lg:mt-4">
         Ritik singh © 2024. All rights reserved.
       </h1>
     </div>

@@ -4,9 +4,12 @@ import { useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import "remixicon/fonts/remixicon.css";
 import { setGenreType, setSearchInput } from "../redux/movieSlice";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
+import DarkModeToggle from "./DarkModeToggle";
+import { toggleDarkMode } from "../redux/darkModeSlice";
 
 function Navbar() {
+  const isDarkMode = useSelector((state) => state.darkMode.isDarkMode);
   const [isMobileView, setIsMobileView] = useState(window.innerWidth < 768);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchClicked, setIsSearchClicked] = useState(false);
@@ -143,7 +146,10 @@ function Navbar() {
   }, [location]);
   return (
     <>
-      <div className="w-full fixed md:h-[80px] h-[70px] bg-[#000000] bg-opacity-75 text-white flex lg:justify-around justify-evenly items-center z-50 text-nowrap -space-x-2 lg:-space-x-5 lg:pl-20 xl:space-x-0 xl:pl-0">
+      <div className="w-full fixed md:h-[80px] h-[70px] bg-[#000000] dark:bg-opacity-75 bg-opacity-85 transition-all duration-300 text-white flex lg:justify-around justify-evenly items-center z-50 text-nowrap -space-x-2 lg:-space-x-5 lg:pl-20 xl:space-x-0 xl:pl-0">
+        <span className="absolute xl:left-14 left-7 top-1/2 -translate-y-1/2 lg:block hidden">
+          <DarkModeToggle />
+        </span>
         <NavLink to={"/"}>
           <h1
             style={{
@@ -242,6 +248,12 @@ function Navbar() {
               <i className="ri-keyboard-line text-xl"></i> Genre
             </span>
           </NavLink>
+          <span className="flex gap-2 items-center">
+            <DarkModeToggle />
+            <button onClick={() => dispatch(toggleDarkMode())}>
+              Lights {isDarkMode ? "On" : "Off"}
+            </button>
+          </span>
         </motion.div>
 
         <div className="searchBar relative">
@@ -253,8 +265,8 @@ function Navbar() {
               type="text"
               onChange={(e) => dispatch(setSearchInput(e.target.value))}
               value={searchInput}
-              placeholder="Search for movies or shows..."
-              className={`md:block md:w-[300px] w-[280px] xxs:w-[250px] placeholder:text-sm focus:ring-[#8d5353] transition-all duration-300 bg-[#000000] outline-none ring ring-[#4a4a4a] rounded-full px-4 py-2 ${
+              placeholder="Search for movies or shows"
+              className={`md:block md:w-[300px] w-[275px] xxs:w-[255px] placeholder:text-sm focus:ring-[#8d5353] transition-all duration-300 bg-[#000000] outline-none ring ring-[#3b3b3b] rounded-full px-4 py-2 ${
                 isSearchClicked && isMobileView ? "block w-full" : "hidden"
               }`}
             />
@@ -270,14 +282,14 @@ function Navbar() {
       </div>
       {isGenreClicked && (
         <div className="genres w-full absolute left-1/2 -translate-x-1/2 md:top-[130px] top-[130px] z-20">
-          <div className="absolute left-1/2 -translate-x-1/2 -top-10  xxs:text-sm">
+          <div className="absolute left-1/2 -translate-x-1/2 -top-10  xxs:text-sm ">
             <span className="flex gap-4 justify-center w-full">
               <button
                 onClick={handleMovies}
                 className={` ${
                   genreType === "movie"
                     ? "underline underline-offset-2 decoration-[#8d5353] decoration-2 text-[#8d5353]"
-                    : "text-white hover:text-[#8d5353] transition-colors duration-300"
+                    : "text-black dark:text-white hover:text-[#8d5353] transition-colors duration-300"
                 }`}
               >
                 Movies
@@ -287,7 +299,7 @@ function Navbar() {
                 className={` ${
                   genreType === "tv"
                     ? "underline underline-offset-2 decoration-[#8d5353] decoration-2 text-[#8d5353]"
-                    : "text-white hover:text-[#8d5353] transition-colors duration-300"
+                    : "text-black dark:text-white hover:text-[#8d5353] transition-colors duration-300"
                 }`}
               >
                 Tv Shows

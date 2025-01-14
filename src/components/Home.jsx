@@ -63,7 +63,7 @@ function Home() {
   }, [loading, bannerData]);
 
   return (
-    <div className="carousel w-full h-full min-h-screen">
+    <div className="carousel w-full h-full min-h-screen text-white ">
       <div className="w-full min-h-full max-h-[98vh] flex overflow-hidden">
         {delayedLoading && bannerData.length === 0 && (
           <>

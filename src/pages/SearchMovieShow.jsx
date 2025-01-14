@@ -20,8 +20,6 @@ function SearchMovieShow() {
   const configImageData = useSelector(
     (state) => state.bingebank.configImageData
   );
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState(null);
   const location = useLocation();
   const [hoveredItemId, setHoveredItemId] = useState(null);
   const [results, setResults] = useState([]);
@@ -180,7 +178,7 @@ function SearchMovieShow() {
                           : "opacity-0"
                       }`}
                     >
-                      <div className="text-center xl:block hidden">
+                      <div className="text-center xl:block hidden text-white">
                         <h2 className="text-lg font-semibold cursor-auto">
                           {content?.title || content?.name}
                         </h2>
@@ -192,7 +190,7 @@ function SearchMovieShow() {
                       </div>
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60 hover:opacity-0 transition-opacity duration-300 lg:block block" />
-                    <div className="absolute bottom-0 w-full text-wrap text-center space-x-1 lg:space-x-2 p-1 lg:block block">
+                    <div className="absolute bottom-0 w-full text-wrap text-center space-x-1 lg:space-x-2 p-1 lg:block block text-white">
                       <div className="font-semibold flex justify-center space-x-2 ">
                         <h1 className="cursor-auto">
                           {content?.title || content?.name}

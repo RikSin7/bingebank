@@ -161,7 +161,7 @@ const Details = () => {
 
   return (
     <div className={`${recommededData?.length > 0 ? "pb-12" : "pb-0"}`}>
-      <div className="md:pt-[80px] pt-[70px] w-full min-h-screen flex flex-col mx-auto px-4 relative">
+      <div className="md:pt-[80px] pt-[70px] w-full min-h-screen flex flex-col mx-auto px-4 relative bg-[#151515] dark:bg-[#151515] text-white">
         <div
           className={`absolute  inset-0 bg-black transition-all duration-300 min-h-screen ${
             dimMode ? "opacity-90 z-30" : "opacity-0 z-0"
@@ -173,7 +173,7 @@ const Details = () => {
         >
           <i className="ri-arrow-go-back-fill"></i>
         </button>
-        <div className="relative  w-full h-full lg:-mt-[80px]">
+        <div className="relative  w-full h-full lg:-mt-[80px] ">
           <div className="grid grid-cols-1 overflow-hidden  w-full h-full">
             <img
               src={

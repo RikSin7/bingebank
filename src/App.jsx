@@ -17,6 +17,8 @@ import {
 } from "./redux/movieSlice";
 import useFetchTMDB from "./hooks/useFetchTMDB";
 import ScrollToTop from "./components/ScrollToTop";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +79,16 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const isDarkMode = useSelector((state) => state.darkMode.isDarkMode);
+  useEffect(() => {
+    const html = document.documentElement;
+    if (isDarkMode) {
+      html.classList.add("dark");
+    } else {
+      html.classList.remove("dark");
+    }
+  }, [isDarkMode]);
+
   // Fetch configuration data
   useFetchTMDB(
     "/configuration",
@@ -118,7 +130,7 @@ function App() {
   );
 
   return (
-    <div className="font-poppins bg-[#151515] text-white">
+    <div className="font-poppins dark:bg-[#151515] bg-white dark:text-white text-black transition-all duration-300">
       <RouterProvider router={router}>
         <ScrollToTop />
       </RouterProvider>

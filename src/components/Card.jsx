@@ -127,7 +127,7 @@ function Card({ data = [], heading, media_type, id }) {
 
   return (
     <>
-      <div className="min-h-[20vh] w-full px-4 lg:px-6">
+      <div className="min-h-[20vh] w-full px-4 lg:px-6 text-black dark:text-white transition-all duration-300">
         <button
           className="font-poppins flex items-center gap-0 lg:gap-1 text-xl md:text-2xl lg:text-3xl font-[400]"
           onClick={handleClickCategory}
@@ -137,7 +137,7 @@ function Card({ data = [], heading, media_type, id }) {
         </button>
 
         <div className="w-full relative mx-auto">
-          <div className="next&previous text-white text-5xl z-20 hidden lg:flex justify-between absolute w-full top-1/2 -translate-y-1/2 pointer-events-none">
+          <div className="next&previous text-5xl z-20 hidden lg:flex justify-between absolute w-full top-1/2 -translate-y-1/2 pointer-events-none">
             <button
               className="left pointer-events-auto"
               onClick={handlePreviousCard}
@@ -192,7 +192,7 @@ function Card({ data = [], heading, media_type, id }) {
                         />
                       )}
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60 hover:opacity-0 transition-opacity duration-300" />
-                      <div className="absolute bottom-0 w-full text-wrap text-center space-x-1 lg:space-x-2 p-1">
+                      <div className="absolute bottom-0 w-full text-wrap text-center space-x-1 lg:space-x-2 p-1 text-white">
                         <div className="font-semibold flex justify-center space-x-2">
                           <h1 className="cursor-auto">
                             {content?.title || content?.name}
