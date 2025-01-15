@@ -266,8 +266,8 @@ function Navbar() {
               onChange={(e) => dispatch(setSearchInput(e.target.value))}
               value={searchInput}
               placeholder="Search for movies or shows"
-              className={`md:block md:w-[300px] w-[260px] xxs:w-[255px] placeholder:text-sm focus:ring-[#8d5353] transition-all duration-300 bg-[#000000] outline-none ring ring-[#3b3b3b] rounded-full px-4 py-2 ${
-                isSearchClicked && isMobileView ? "block w-full" : "hidden"
+              className={`md:block md:w-[300px] w-[275px] xxs:w-[255px] placeholder:text-sm focus:ring-[#8d5353] transition-all duration-300 bg-[#000000] outline-none ring ring-[#3b3b3b] rounded-full px-4 py-2 ${
+                isSearchClicked && isMobileView ? "block " : "hidden"
               }`}
             />
             <button
