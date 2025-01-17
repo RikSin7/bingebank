@@ -173,9 +173,9 @@ function Card({ data = [], heading, media_type, id }) {
                   className="transition-all duration-500 ease-in-out flex-shrink-0 lg:w-[230px] md:w-[180px] w-[150px]"
                   onClick={() => handleImageClick(content)}
                 >
-                  <div className="transition-all duration-500 ease-in-out scroll-smooth mx-auto">
+                  <div className="transition-all duration-500 ease-in-out scroll-smooth mx-auto overflow-y-hidden">
                     <div
-                      className={`max-w-[230px] aspect-[2/3] cursor-pointer rounded-lg overflow-hidden  transition-transform duration-300 ease-in-out hover:scale-[1.05] relative border border-[#999999]`}
+                      className={`max-w-[230px] aspect-[2/3] cursor-pointer rounded-lg overflow-hidden transition-transform duration-300 ease-in-out hover:scale-[1.05] relative border border-[#999999]`}
                       key={content.id}
                     >
                       {content?.poster_path ? (

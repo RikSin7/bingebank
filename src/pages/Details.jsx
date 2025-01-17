@@ -254,7 +254,11 @@ const Details = () => {
                   <i className="ri-star-half-line text-sm"></i>
                 </span>
                 <span className="voteCount">
-                  <span>{detailsData?.vote_count.toFixed(0) + "+"}</span> views
+                  <span>
+                    {detailsData?.vote_count && detailsData?.vote_count.toFixed(0) +
+                      "+"}
+                  </span>{" "}
+                  views
                 </span>
               </div>
 

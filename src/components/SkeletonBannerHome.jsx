@@ -1,6 +1,6 @@
 function SkeletonBannerHome() {
   return (
-    <div className="w-[100vw] lg:min-h-[98vh] min-h-[450px] bg-gradient-to-r from-[#1b1b1b]  to-[#000000] animate-pulse rounded-lg relative flex flex-col">
+    <div className="w-[100vw] lg:min-h-[98vh] min-h-[650px] bg-gradient-to-r from-[#1b1b1b]  to-[#000000] animate-pulse rounded-lg relative flex flex-col">
       {/* Placeholder for image */}
       <div className="flex-1 bg-gradient-to-r from-[#1b1b1b]  to-[#000000] rounded-t-lg"></div>
       {/* Placeholder for text */}

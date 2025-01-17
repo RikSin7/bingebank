@@ -7,7 +7,6 @@ import SkeletonBannerHome from "./SkeletonBannerHome";
 function Home() {
   const loading = useSelector((state) => state.bingebank.loading);
   const [delayedLoading, setDelayedLoading] = useState(true);
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const bannerData = useSelector((state) => state.bingebank.bannerData);
   const imgURL = useSelector((state) => state.bingebank.configImageData);
@@ -18,6 +17,15 @@ function Home() {
   const hollywoodData = useSelector((state) => state.bingebank.hollywoodData);
   const [bannerEntered, setBannerEntered] = useState(false);
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handlePrevious = () => {
     setCurrentIndex((prevIndex) =>
@@ -77,7 +85,7 @@ function Home() {
         {bannerData &&
           bannerData.map((content) => (
             <div
-              className="carousel-banner min-w-full md:min-h-screen min-h-[450px] flex relative transition-all duration-500 ease-in-out mx-auto"
+              className="carousel-banner min-w-full md:min-h-screen min-h-[650px] flex relative transition-all duration-500 ease-in-out mx-auto"
               key={content?.id}
               style={{
                 transform: `translateX(-${currentIndex * 100}%)`,
@@ -89,7 +97,14 @@ function Home() {
             >
               <div className="h-full w-full">
                 <img
-                  src={imgURL + content?.backdrop_path}
+                  src={
+                    content?.poster_path || content?.backdrop_path
+                      ? imgURL +
+                        (isMobile
+                          ? content?.poster_path
+                          : content?.backdrop_path)
+                      : null
+                  }
                   alt={content?.title || content?.name}
                   className="w-full h-full object-cover flex-shrink-0"
                   style={{
