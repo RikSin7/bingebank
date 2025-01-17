@@ -222,7 +222,7 @@ function Navbar() {
               key={index}
               to={item.to}
               className={({ isActive }) =>
-                `hover:transition-colors hover:duration-300 my-2 ${
+                `hover:transition-colors hover:duration-300 mb-2 ${
                   isActive ? "text-[#8d5353]" : "hover:text-[#8d5353]"
                 }`
               }
@@ -244,11 +244,11 @@ function Navbar() {
               }`
             }
           >
-            <span className="flex gap-2 items-center">
+            <span className="flex gap-2 items-center mb-2">
               <i className="ri-keyboard-line text-xl"></i> Genre
             </span>
           </NavLink>
-          <span className="flex gap-2 items-center">
+          <span className="flex gap-2 items-center ">
             <DarkModeToggle />
             <button onClick={() => dispatch(toggleDarkMode())}>
               Lights {isDarkMode ? "On" : "Off"}
