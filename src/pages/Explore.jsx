@@ -215,7 +215,7 @@ function Explore() {
                   onMouseLeave={() => setHoveredItemId(null)}
                   onClick={() => handleImageClick(content)}
                 >
-                  <div className="relative cursor-pointer overflow-hidden rounded-lg aspect-[2/3] border border-[#999999]">
+                  <div className="relative cursor-pointer overflow-hidden rounded-lg aspect-[2/3] border border-[#000000] dark:border-[#999999] transition-all duration-300">
                     {content?.poster_path ? (
                       <img
                         src={`${configImageData}${content?.poster_path}`}

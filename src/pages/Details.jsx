@@ -255,8 +255,8 @@ const Details = () => {
                 </span>
                 <span className="voteCount">
                   <span>
-                    {detailsData?.vote_count && detailsData?.vote_count.toFixed(0) +
-                      "+"}
+                    {detailsData?.vote_count &&
+                      detailsData?.vote_count.toFixed(0) + "+"}
                   </span>{" "}
                   views
                 </span>

@@ -139,13 +139,13 @@ function Card({ data = [], heading, media_type, id }) {
         <div className="w-full relative mx-auto">
           <div className="next&previous text-5xl z-20 hidden lg:flex justify-between absolute w-full top-1/2 -translate-y-1/2 pointer-events-none">
             <button
-              className="left pointer-events-auto"
+              className="left pointer-events-auto  text-[#ffffff]"
               onClick={handlePreviousCard}
             >
               <i className="ri-arrow-left-wide-line"></i>
             </button>
             <button
-              className="right pointer-events-auto"
+              className="right pointer-events-auto  text-[#ffffff]"
               onClick={handleNextCard}
             >
               <i className="ri-arrow-right-wide-line"></i>
@@ -170,12 +170,12 @@ function Card({ data = [], heading, media_type, id }) {
               data.map((content) => (
                 <div
                   key={content.id}
-                  className="transition-all duration-500 ease-in-out flex-shrink-0 lg:w-[230px] md:w-[180px] w-[150px]"
+                  className="transition-all duration-0 ease-in-out flex-shrink-0 lg:w-[240px] md:w-[180px] w-[150px]"
                   onClick={() => handleImageClick(content)}
                 >
-                  <div className="transition-all duration-500 ease-in-out scroll-smooth mx-auto overflow-y-hidden">
+                  <div className="transition-all duration-300 ease-in-out scroll-smooth mx-auto overflow-hidden rounded-lg  border border-[#000000] dark:border-[#999999]">
                     <div
-                      className={`max-w-[230px] aspect-[2/3] cursor-pointer rounded-lg overflow-hidden transition-transform duration-300 ease-in-out hover:scale-[1.05] relative border border-[#999999]`}
+                      className={`max-w-[240px] aspect-[2/3] cursor-pointer rounded-lg transition-transform duration-500 ease-in-out md:hover:scale-[1.1] relative`}
                       key={content.id}
                     >
                       {content?.poster_path ? (
