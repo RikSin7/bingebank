@@ -110,20 +110,23 @@ function SearchMovieShow() {
           Search Results for{" "}
           <span className="font-poppins font-normal">&quot;{query}&quot;</span>
         </h1>
-        {!delayedLoading && !error && results.length === 0 && (
-          <div className="flex flex-col items-center w-full gap-2 h-[35vh] justify-center">
-            <p className="text-gray-500">No results found.</p>
-            <div className="">
-              <div className="overflow-hidden w-[200px] h-[200px] rounded-full">
-                <img
-                  src={notFound}
-                  className="object-cover w-full h-full"
-                  alt="not-found"
-                />
+        {!delayedLoading &&
+          !error &&
+          results.length === 0 &&
+          query.trim() !== "" && (
+            <div className="flex flex-col items-center w-full gap-2 h-[35vh] justify-center">
+              <p className="text-gray-500">No results found.</p>
+              <div className="">
+                <div className="overflow-hidden w-[200px] h-[200px] rounded-full">
+                  <img
+                    src={notFound}
+                    className="object-cover w-full h-full"
+                    alt="not-found"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
       <div className="lg:pt-[75px] pt-[70px] min-h-screen  mx-auto lg:px-10 px-4 ">
         <div className="w-full">

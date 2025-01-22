@@ -107,7 +107,7 @@ function Navbar() {
       if (searchInput) {
         navigate(`/search?q=${encodeURIComponent(searchInput)}`);
       }
-    }, 500);
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [searchInput]);
