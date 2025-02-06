@@ -1,27 +1,62 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import useFetchDetails from "../hooks/useFetchDetails";
 import { useSelector } from "react-redux";
 import languageCodes from "../components/LanguageCodes";
 import notAvailable from "../assets/imageNotAvailable.png";
 import useFetchTMDB from "../hooks/useFetchTMDB";
 import Card from "../components/Card";
-import { setRecommededData, setSimilarData } from "../redux/movieSlice";
+import {
+  setGenreType,
+  setProviders,
+  setRecommededData,
+  setSimilarData,
+} from "../redux/movieSlice";
 import VideoPlay from "../components/VideoPlay";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SkeletonDetails from "../components/SkeletonDetails";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 
 const Details = () => {
   const { id, explore } = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const similarData = useSelector((state) => state.bingebank.similarData);
   const recommededData = useSelector((state) => state.bingebank.recommededData);
+  const providers = useSelector((state) => state.bingebank.providers);
   const [videoType, setVideoType] = useState("Trailer");
   const [showVideo, setShowVideo] = useState(false);
   const [dimMode, setDimMode] = useState(false);
   const [selectedCast, setSelectedCast] = useState(null);
   const [positions, setPositions] = useState([]);
   const [positionGenre, setPositionGenre] = useState([]);
+  const [tmdbLink, setTmdbLink] = useState("");
+  const country = "IN";
+
+  const fetchWatchProviders = async () => {
+    try {
+      const response = await axios.get(`/${explore}/${id}/watch/providers`);
+      const data = response?.data?.results;
+      if (data?.[country]) {
+        setTmdbLink(data[country]?.link); // Store TMDB's universal link
+        dispatch(setProviders(data[country]?.flatrate || []));
+      } else {
+        dispatch(setProviders([]));
+      }
+    } catch (error) {
+      console.error("Error fetching watch providers:", error);
+      dispatch(setProviders([]));
+    }
+  };
+
+  useEffect(() => {
+    fetchWatchProviders();
+  }, [explore, id]);
+
+  const handleGenreClick = (type) => {
+    dispatch(setGenreType(type));
+  };
 
   const castRef = useRef(null);
 
@@ -173,7 +208,7 @@ const Details = () => {
         >
           <i className="ri-arrow-go-back-fill"></i>
         </button>
-        <div className="relative  w-full h-full lg:-mt-[80px] ">
+        <div className="relative w-full h-full lg:-mt-[80px] ">
           <div className="grid grid-cols-1 overflow-hidden  w-full h-full">
             <img
               src={
@@ -278,25 +313,33 @@ const Details = () => {
 
               <motion.ul className="genre flex flex-wrap md:gap-3 gap-2 md:mb-2 mt-2">
                 {detailsData?.genres?.map((genre, index) => (
-                  <motion.li
-                    whileHover={{ scale: 0.9, transition: { duration: 0.3 } }}
-                    whileTap={{ scale: 1, transition: { duration: 0.2 } }}
-                    key={genre.id}
-                    className="cursor-auto ring-1 md:ring rounded-full md:px-4 md:py-2 px-2 py-1 text-sm xxs:text-xs ring-gray-300"
-                    animate={{
-                      x: positionGenre[index]?.x || 0, // Use updated position
-                      y: positionGenre[index]?.y || 0, // Use updated position
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 150,
-                      damping: 10,
-                    }}
-                    onMouseMove={(e) => handleMouseMoveGenre(e, index)}
-                    onMouseOut={() => handleMouseLeaveGenre(index)}
+                  <NavLink
+                    key={`${genre.id}-${index}`}
+                    to={`/${explore}/${genre.name.toLowerCase()}`}
+                    onClick={() => handleGenreClick(explore)}
                   >
-                    {genre.name}
-                  </motion.li>
+                    <motion.li
+                      whileHover={{
+                        scale: 0.9,
+                        transition: { duration: 0.3 },
+                      }}
+                      whileTap={{ scale: 1, transition: { duration: 0.2 } }}
+                      className="cursor-pointer ring-1 md:ring rounded-full md:px-4 md:py-2 px-2 py-1 text-sm xxs:text-xs ring-gray-300"
+                      animate={{
+                        x: positionGenre[index]?.x || 0, // Use updated position
+                        y: positionGenre[index]?.y || 0, // Use updated position
+                      }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 250,
+                        damping: 20,
+                      }}
+                      onMouseMove={(e) => handleMouseMoveGenre(e, index)}
+                      onMouseOut={() => handleMouseLeaveGenre(index)}
+                    >
+                      {genre.name}
+                    </motion.li>
+                  </NavLink>
                 ))}
               </motion.ul>
 
@@ -316,26 +359,31 @@ const Details = () => {
               </span>
               {/* play trailer & clip for bigger screens */}
               <div className="flex justify-center gap-4">
-                <button
-                  className="mt-2 lg:mt-4 -ml-1 w-full sm:flex hidden"
-                  onClick={() => handleShowVideo("Trailer")}
-                >
-                  <i className="ri-play-circle-fill text-5xl flex items-center gap-1 lg:gap-2 text-[#72ad7f] hover:text-white transition-all duration-300">
-                    <span className="text-2xl lg:text-3xl text-nowrap font-poppins font-bold text-white hover:text-[#72ad7f] transition-all duration-300">
-                      Play Trailer
-                    </span>
-                  </i>
-                </button>
-                <button
-                  className="mt-2 lg:mt-4 -ml-1 w-full sm:flex hidden"
-                  onClick={() => handleShowVideo("Clip")}
-                >
-                  <i className="ri-play-circle-fill text-5xl flex items-center gap-1 lg:gap-2  text-[#72ad7f] hover:text-white transition-all duration-300">
-                    <span className="text-2xl lg:text-3xl text-nowrap font-poppins font-bold text-white hover:text-[#72ad7f] transition-all duration-300">
-                      Play Clip
-                    </span>
-                  </i>
-                </button>
+                <div className="w-full mt-2 lg:mt-4 -ml-1 sm:flex hidden h-fit">
+                  <button
+                    className="w-fit h-fit"
+                    onClick={() => handleShowVideo("Trailer")}
+                  >
+                    <i className="ri-play-circle-fill text-5xl flex items-center gap-1 lg:gap-2 text-[#72ad7f] hover:text-white transition-all duration-300">
+                      <span className="text-2xl lg:text-3xl text-nowrap font-poppins font-bold text-white hover:text-[#72ad7f] transition-all duration-300">
+                        Play Trailer
+                      </span>
+                    </i>
+                  </button>
+                </div>
+
+                <div className="w-full mt-2 lg:mt-4 -ml-1 sm:flex hidden h-fit">
+                  <button
+                    className="w-fit h-fit"
+                    onClick={() => handleShowVideo("Clip")}
+                  >
+                    <i className="ri-play-circle-fill text-5xl flex items-center gap-1 lg:gap-2  text-[#72ad7f] hover:text-white transition-all duration-300">
+                      <span className="text-2xl lg:text-3xl text-nowrap font-poppins font-bold text-white hover:text-[#72ad7f] transition-all duration-300">
+                        Play Clip
+                      </span>
+                    </i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -386,6 +434,89 @@ const Details = () => {
               : "N/A"}
           </span>
 
+          {/* Watch providers */}
+          <div className="watch-providers flex justify-between items-center md:w-[75vw] sm:w-[85vw] md:gap-4 gap-8 py-4">
+            <h2 className="md:text-3xl text-2xl xxs:text-xl font-bold font-jose">
+              Where to Watch?🍿{" "}
+            </h2>
+            <div className="flex flex-col items-center">
+              <div
+                className={`flex gap-4 ${
+                  providers.length > 2 ? "flex-wrap" : "flex-nowrap"
+                } justify-center`}
+              >
+                {providers?.length > 0 ? (
+                  providers?.map((provider) => {
+                    const providerUrls = {
+                      Netflix: "https://www.netflix.com/",
+                      "Amazon Prime Video": "https://www.primevideo.com/",
+                      "Disney+": "https://www.disneyplus.com/",
+                      Hulu: "https://www.hulu.com/",
+                      "Apple TV": "https://tv.apple.com/",
+                      "HBO Max": "https://www.hbomax.com/",
+                      "Jio Cinema": "https://www.jiocinema.com/",
+                      Zee5: "https://www.zee5.com/",
+                      "Amazon Prime": "https://www.primevideo.com/",
+                      Hotstar: "https://www.hotstar.com/",
+                      "Disney+ Hotstar": "https://www.hotstar.com/",
+                      Voot: "https://www.voot.com/",
+                      "Sony Liv": "https://www.sonyliv.com/",
+                      "VI movies and tv": "https://moviesandtv.myvi.in/",
+                      Crunchyroll: "https://www.crunchyroll.com/",
+                    };
+
+                    const providerLink =
+                      providerUrls[provider?.provider_name] || tmdbLink; // Use TMDB link if no direct provider link
+
+                    return (
+                      <a
+                        key={provider?.provider_name}
+                        href={providerLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-col items-center flex-shrink-0"
+                      >
+                        <motion.img
+                          whileHover={{
+                            scale: 1.2,
+                            transition: { duration: 0.3 },
+                          }}
+                          whileTap={{
+                            scale: 1,
+                            transition: { duration: 0.2 },
+                          }}
+                          src={`https://image.tmdb.org/t/p/w300${provider?.logo_path}`}
+                          alt={provider?.provider_name}
+                          className="lg:w-14 lg:h-14 w-12 h-12 rounded-full"
+                        />
+                        <p className="text-sm text-center max-w-32">
+                          {provider?.provider_name}
+                        </p>
+                      </a>
+                    );
+                  })
+                ) : (
+                  <i className="text-[#cecece]">
+                    No streaming options available.
+                  </i>
+                )}
+              </div>
+
+              {tmdbLink && (
+                <div className="mt-2 text-center">
+                  <a
+                    href={tmdbLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline"
+                  >
+                    View all providers on TMDB
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="font-medium cursor-auto pt-4 lg:text-4xl md:text-3xl sm:text-2xl text-xl px-0">
             Cast{creditsData?.cast?.length === 0 && ":"}{" "}
             <span className="font-light">
@@ -398,10 +529,10 @@ const Details = () => {
               {creditsData?.cast?.slice(0, 20).map((cast, index) => (
                 <motion.div
                   key={cast.id}
-                  className="cast-member flex flex-col items-center text-center cursor-pointer"
-                  onClick={() => handleCastClick(cast)}
+                  className="cast-member flex flex-col items-center text-center"
                 >
                   <motion.img
+                    onClick={() => handleCastClick(cast)}
                     whileHover={{ scale: 0.8, transition: { duration: 0.3 } }}
                     whileTap={{ scale: 1.2, transition: { duration: 0.2 } }}
                     animate={{
@@ -411,7 +542,7 @@ const Details = () => {
                     transition={{
                       type: "spring",
                       stiffness: 250,
-                      damping: 40,
+                      damping: 20,
                     }}
                     onMouseMove={(e) => handleMouseMoveCast(e, index)}
                     onMouseOut={() => handleMouseLeaveCast(index)}
@@ -421,7 +552,7 @@ const Details = () => {
                         : notAvailable
                     }
                     alt={cast?.name}
-                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover shadow-lg"
+                    className="w-20 h-20 cursor-pointer sm:w-24 sm:h-24 rounded-full object-cover shadow-lg"
                     style={{
                       boxShadow: "0 0px 5px rgba(255, 255, 255, 0.3)",
                     }}
@@ -493,7 +624,7 @@ const Details = () => {
             }
           />
         ) : (
-          <p className="px-4 lg:px-6 text-[#adadad] py-4">
+          <p className="px-4 lg:px-6 dark:text-[#adadad] text-[#636363] transition-colors duration-300 py-4">
             No similar content available.
           </p>
         )}
@@ -509,7 +640,7 @@ const Details = () => {
             }
           />
         ) : (
-          <p className="px-4 lg:px-6 text-[#adadad] py-4">
+          <p className="px-4 lg:px-6 dark:text-[#adadad]  text-[#636363] transition-colors duration-300 py-4">
             No recommended content available.
           </p>
         )}
