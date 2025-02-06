@@ -114,34 +114,46 @@ function Home() {
               </div>
               <div className="absolute inset-0 bg-[radial-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.8))]" />
 
-              <div className="next&previous text-white text-7xl  hidden lg:flex justify-between w-full absolute top-1/2 -translate-y-1/2">
+              {/* buttons controls */}
+              <div className="next&previous text-[#c1c1c1] text-2xl lg:text-3xl flex gap-4 justify-end w-full absolute lg:bottom-10 sm:bottom-4 bottom-0 -translate-y-4 right-5">
                 <button
-                  className="left z-50"
+                  className="left z-50 bg-[#1a1a1a] bg-opacity-85 hover:bg-[#333333] transition-colors duration-300 lg:py-12 py-8 lg:rounded-xl rounded-lg"
                   onClick={(e) => {
                     e.stopPropagation();
                     handlePrevious();
                   }}
-                  onMouseEnter={() => setBannerEntered(true)}
-                  onMouseLeave={() => setBannerEntered(false)}
+                  {...(!isMobile && {
+                    onMouseEnter: () => setBannerEntered(true),
+                    onMouseLeave: () => setBannerEntered(false),
+                  })}
+                  {...(isMobile && {
+                    onTouchStart: () => setBannerEntered(true),
+                    onTouchEnd: () => setBannerEntered(false),
+                  })}
                 >
-                  <i className="ri-arrow-left-wide-line "></i>
+                  <i className="ri-arrow-left-s-line"></i>
                 </button>
                 <button
-                  className="right"
+                  className="right z-50 bg-[#1a1a1a] bg-opacity-85 hover:bg-[#333333] transition-colors duration-300 lg:py-12 py-8 lg:rounded-xl rounded-lg"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleNext();
                   }}
-                  onMouseEnter={() => setBannerEntered(true)}
-                  onMouseLeave={() => setBannerEntered(false)}
+                  {...(!isMobile && {
+                    onMouseEnter: () => setBannerEntered(true),
+                    onMouseLeave: () => setBannerEntered(false),
+                  })}
+                  {...(isMobile && {
+                    onTouchStart: () => setBannerEntered(true),
+                    onTouchEnd: () => setBannerEntered(false),
+                  })}
                 >
-                  <i className="ri-arrow-right-wide-line"></i>
+                  <i className="ri-arrow-right-s-line"></i>
                 </button>
               </div>
               <div className="absolute lg:left-20 left-4 text-wrap lg:w-1/2 md:w-[70%] w-1/2 h-full">
                 <div className="flex h-full w-full flex-col justify-end lg:pb-12 sm:pb-8 pb-2">
                   <span
-                    className=""
                     onMouseEnter={() => setBannerEntered(true)}
                     onMouseLeave={() => setBannerEntered(false)}
                   >

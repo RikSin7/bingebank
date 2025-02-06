@@ -500,7 +500,8 @@ const Details = () => {
                   })
                 ) : (
                   <i className="text-[#cecece]">
-                    No streaming options available.
+                    No streaming options available
+                    <i className="ri-emotion-sad-fill"></i>
                   </i>
                 )}
               </div>
@@ -528,7 +529,7 @@ const Details = () => {
           </div>
           <div>
             {/* Cast Grid */}
-            <div className="cast w-[90%] my-4 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-4 justify-center">
+            <div className="cast md:w-[90%] my-4 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-4 justify-center">
               {creditsData?.cast?.slice(0, 20).map((cast, index) => (
                 <motion.div
                   key={cast.id}
@@ -628,7 +629,8 @@ const Details = () => {
           />
         ) : (
           <p className="px-4 lg:px-6 dark:text-[#adadad] text-[#636363] transition-colors duration-300 py-4">
-            No similar content available.
+            No similar content available
+            <i className="ri-emotion-sad-fill"></i>
           </p>
         )}
         {recommededData?.length > 0 ? (
@@ -644,7 +646,8 @@ const Details = () => {
           />
         ) : (
           <p className="px-4 lg:px-6 dark:text-[#adadad]  text-[#636363] transition-colors duration-300 py-4">
-            No recommended content available.
+            No recommended content available
+            <i className="ri-emotion-sad-fill"></i>
           </p>
         )}
       </div>
