@@ -477,6 +477,9 @@ const Details = () => {
                         className="flex flex-col items-center flex-shrink-0"
                       >
                         <motion.img
+                          style={{
+                            boxShadow: "0 0px 5px rgba(255, 255, 255, 0.3)",
+                          }}
                           whileHover={{
                             scale: 1.2,
                             transition: { duration: 0.3 },
