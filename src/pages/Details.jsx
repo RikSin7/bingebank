@@ -439,7 +439,7 @@ const Details = () => {
             <h2 className="md:text-3xl text-2xl xxs:text-xl font-bold font-jose">
               Where to Watch?🍿{" "}
             </h2>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center  pr-8">
               <div
                 className={`flex gap-4 ${
                   providers.length > 2 ? "flex-wrap" : "flex-nowrap"
