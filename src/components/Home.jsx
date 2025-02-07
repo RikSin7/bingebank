@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Card from "./Card";
 import { useNavigate } from "react-router-dom";
 import SkeletonBannerHome from "./SkeletonBannerHome";
+import ButtonControls from "./ButtonControls";
 
 function Home() {
   const loading = useSelector((state) => state.bingebank.loading);
@@ -26,18 +27,6 @@ function Home() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const handlePrevious = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? bannerData.length - 1 : prevIndex - 1
-    );
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === bannerData.length - 1 ? 0 : prevIndex + 1
-    );
-  };
 
   useEffect(() => {
     if (bannerData.length > 0 && !bannerEntered) {
@@ -115,42 +104,13 @@ function Home() {
               <div className="absolute inset-0 bg-[radial-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.8))]" />
 
               {/* buttons controls */}
-              <div className="next&previous text-[#c1c1c1] text-2xl lg:text-3xl flex gap-4 justify-end w-full absolute lg:bottom-10 sm:bottom-4 bottom-0 -translate-y-4 right-5">
-                <button
-                  className="left z-50 bg-[#1a1a1a] bg-opacity-85 hover:bg-[#333333] transition-colors duration-300 lg:py-12 py-8 lg:rounded-xl rounded-lg"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePrevious();
-                  }}
-                  {...(!isMobile && {
-                    onMouseEnter: () => setBannerEntered(true),
-                    onMouseLeave: () => setBannerEntered(false),
-                  })}
-                  {...(isMobile && {
-                    onTouchStart: () => setBannerEntered(true),
-                    onTouchEnd: () => setBannerEntered(false),
-                  })}
-                >
-                  <i className="ri-arrow-left-s-line"></i>
-                </button>
-                <button
-                  className="right z-50 bg-[#1a1a1a] bg-opacity-85 hover:bg-[#333333] transition-colors duration-300 lg:py-12 py-8 lg:rounded-xl rounded-lg"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleNext();
-                  }}
-                  {...(!isMobile && {
-                    onMouseEnter: () => setBannerEntered(true),
-                    onMouseLeave: () => setBannerEntered(false),
-                  })}
-                  {...(isMobile && {
-                    onTouchStart: () => setBannerEntered(true),
-                    onTouchEnd: () => setBannerEntered(false),
-                  })}
-                >
-                  <i className="ri-arrow-right-s-line"></i>
-                </button>
-              </div>
+              <ButtonControls
+                setCurrentIndex={setCurrentIndex}
+                bannerData={bannerData}
+                isMobile={isMobile}
+                setBannerEntered={setBannerEntered}
+              />
+
               <div className="absolute lg:left-20 left-4 text-wrap lg:w-1/2 md:w-[70%] w-1/2 h-full">
                 <div className="flex h-full w-full flex-col justify-end lg:pb-12 sm:pb-8 pb-2">
                   <span

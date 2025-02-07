@@ -14,9 +14,11 @@ const movieSlice = createSlice({
     recommededData: [],
     genreType: "movie",
     searchInput: "",
+    providers: [],
+    screenshots: [],
+    reviews: [],
     loading: true,
     error: null,
-    providers: [],
   },
   reducers: {
     setBannerData: (state, action) => {
@@ -84,6 +86,16 @@ const movieSlice = createSlice({
       state.error = null;
       state.loading = false;
     },
+    setScreenshots: (state, action) => {
+      state.screenshots = action.payload;
+      state.error = null;
+      state.loading = false;
+    },
+    setReviews: (state, action) => {
+      state.reviews = action.payload;
+      state.error = null;
+      state.loading = false;
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -108,6 +120,8 @@ export const {
   setSearchInput,
   setDetailsData,
   setProviders,
+  setScreenshots,
+  setReviews,
   setLoading,
   setError,
 } = movieSlice.actions;

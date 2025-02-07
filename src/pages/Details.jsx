@@ -9,6 +9,8 @@ import {
   setGenreType,
   setProviders,
   setRecommededData,
+  setReviews,
+  setScreenshots,
   setSimilarData,
 } from "../redux/movieSlice";
 import VideoPlay from "../components/VideoPlay";
@@ -17,6 +19,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import SkeletonDetails from "../components/SkeletonDetails";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import ButtonControlsScreenshots from "../components/ButtonControlsScreenshots";
 
 const Details = () => {
   const { id, explore } = useParams();
@@ -25,14 +28,32 @@ const Details = () => {
   const similarData = useSelector((state) => state.bingebank.similarData);
   const recommededData = useSelector((state) => state.bingebank.recommededData);
   const providers = useSelector((state) => state.bingebank.providers);
+  const screenshots = useSelector((state) => state.bingebank.screenshots);
+  const reviews = useSelector((state) => state.bingebank.reviews);
   const [videoType, setVideoType] = useState("Trailer");
   const [showVideo, setShowVideo] = useState(false);
   const [dimMode, setDimMode] = useState(false);
   const [selectedCast, setSelectedCast] = useState(null);
+  const [selectedScreenshot, setSelectedScreenshot] = useState(null);
   const [positions, setPositions] = useState([]);
   const [positionGenre, setPositionGenre] = useState([]);
   const [tmdbLink, setTmdbLink] = useState("");
   const country = "IN";
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const sliderRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleImageClick = (screenshot) => {
+    setSelectedScreenshot(screenshot);
+  };
 
   const fetchWatchProviders = async () => {
     try {
@@ -50,9 +71,59 @@ const Details = () => {
     }
   };
 
+  const fetchScreenshots = async () => {
+    try {
+      const response = await axios.get(`/${explore}/${id}/images`);
+      const data = response?.data?.backdrops;
+
+      if (data && data.length > 0) {
+        dispatch(setScreenshots(data.slice(0, 50)));
+        setCurrentIndex(0);
+      } else {
+        dispatch(setScreenshots([]));
+      }
+    } catch (error) {
+      console.error("Error fetching screenshots:", error);
+      dispatch(setScreenshots([]));
+    }
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(`/${explore}/${id}/reviews`);
+      const data = response?.data?.results;
+
+      if (data && data.length > 0) {
+        dispatch(setReviews(data));
+      } else {
+        dispatch(setReviews([]));
+      }
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      dispatch(setReviews([]));
+    }
+  };
+
   useEffect(() => {
-    fetchWatchProviders();
-  }, [explore, id]);
+    const fetchData = async () => {
+      try {
+        await Promise.all([
+          fetchWatchProviders(),
+          fetchScreenshots(),
+          fetchReviews(),
+        ]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+
+    // Cleanup function to reset screenshots when the component unmounts
+    return () => {
+      dispatch(setScreenshots([]));
+    };
+  }, [explore, id]); // Dependency array ensures it runs when explore or id changes
 
   const handleGenreClick = (type) => {
     dispatch(setGenreType(type));
@@ -60,12 +131,18 @@ const Details = () => {
 
   const castRef = useRef(null);
 
+  const screenshotRef = useRef(null);
+
   const handleCastClick = (cast) => {
     setSelectedCast(cast);
   };
 
   const handleClose = () => {
     setSelectedCast(null);
+  };
+
+  const handleCloseSs = () => {
+    setSelectedScreenshot(null);
   };
 
   const {
@@ -196,7 +273,7 @@ const Details = () => {
 
   return (
     <div className={`${recommededData?.length > 0 ? "pb-12" : "pb-0"}`}>
-      <div className="md:pt-[80px] pt-[70px] w-full min-h-screen flex flex-col mx-auto px-4 relative bg-[#151515] dark:bg-[#151515] text-white">
+      <div className="md:pt-[80px] pt-[70px] w-full min-h-screen flex flex-col px-2 relative bg-[#151515] dark:bg-[#151515] text-white pr-4 sm:pr-10 md:pr-4 lg:pr-0">
         <div
           className={`absolute  inset-0 bg-black transition-all duration-300 min-h-screen ${
             dimMode ? "opacity-90 z-30" : "opacity-0 z-0"
@@ -208,8 +285,8 @@ const Details = () => {
         >
           <i className="ri-arrow-go-back-fill"></i>
         </button>
-        <div className="relative w-full h-full lg:-mt-[80px] ">
-          <div className="grid grid-cols-1 overflow-hidden  w-full h-full">
+        <div className="relative w-full h-full lg:-mt-[80px]">
+          <div className="grid grid-cols-1 overflow-hidden w-full h-full">
             <img
               src={
                 detailsData?.poster_path
@@ -296,6 +373,16 @@ const Details = () => {
                   views
                 </span>
               </div>
+              {detailsData?.budget && (
+                <span className="budget my-1">
+                  Budget: {detailsData?.budget || "N/A"}
+                </span>
+              )}
+              {detailsData?.revenue && (
+                <span className="revenue">
+                  Revenue: {detailsData?.revenue || "N/A"}
+                </span>
+              )}
 
               <span className="createdBy my-1 sm:block hidden">
                 Creator:{" "}
@@ -436,10 +523,10 @@ const Details = () => {
 
           {/* Watch providers */}
           <div className="watch-providers flex justify-between items-center md:w-[75vw] sm:w-[85vw] md:gap-4 gap-8 py-4">
-            <h2 className="md:text-3xl text-2xl xxs:text-xl font-bold font-jose">
+            <h2 className="md:text-3xl text-2xl xxs:text-xl font-bold font-jose py-2 lg:py-6">
               Where to Watch?🍿{" "}
             </h2>
-            <div className="flex flex-col items-center  pr-8">
+            <div className="flex flex-col items-center  pr-0">
               <div
                 className={`flex gap-4 ${
                   providers.length > 2 ? "flex-wrap" : "flex-nowrap"
@@ -507,7 +594,7 @@ const Details = () => {
               </div>
 
               {tmdbLink && (
-                <div className="mt-2 text-center">
+                <div className="mt-2">
                   <a
                     href={tmdbLink}
                     target="_blank"
@@ -521,7 +608,103 @@ const Details = () => {
             </div>
           </div>
 
-          <div className="font-medium cursor-auto pt-4 lg:text-4xl md:text-3xl sm:text-2xl text-xl px-0">
+          {/* screenshots */}
+          {screenshots.length > 0 && (
+            <>
+              <h1 className="lg:text-4xl md:text-3xl sm:text-2xl text-xl mb-4 font-medium">
+                Screenshots
+              </h1>
+              <div className="relative w-full">
+                <div className="md:w-[90%] w-full flex justify-center rounded-xl">
+                  <div
+                    ref={sliderRef}
+                    className="screenshots flex overflow-x-auto lg:overflow-hidden scroll-smooth scrollbar-hide w-full rounded-xl gap-2 relative z-10 p-1"
+                  >
+                    {screenshots.map((screenshot, index) => (
+                      <div
+                        key={index}
+                        className="flex-shrink-0 w-[80vw] md:w-[40vw] lg:w-[30vw] flex-grow"
+                      >
+                        <motion.img
+                          onClick={() => handleImageClick(screenshot)}
+                          style={{
+                            boxShadow: "0 0px 2px rgba(255, 255, 255, 0.3)",
+                          }}
+                          whileHover={{
+                            scale: 1.3,
+                            transition: { duration: 0.5 },
+                          }}
+                          whileTap={{
+                            scale: 1,
+                            transition: { duration: 0.2 },
+                          }}
+                          src={`https://image.tmdb.org/t/p/original/${screenshot?.file_path}`}
+                          alt={`Screenshot ${index + 1}`}
+                          className="w-full h-auto rounded-xl z-10 cursor-pointer"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {!isMobile && (
+                  <ButtonControlsScreenshots
+                    setCurrentIndex={setCurrentIndex}
+                    screenshots={screenshots}
+                    sliderRef={sliderRef}
+                    currentIndex={currentIndex}
+                  />
+                )}
+              </div>
+            </>
+          )}
+          {/* Full view screenshot */}
+          <AnimatePresence>
+            {selectedScreenshot && (
+              <motion.div
+                className="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-90 sm:pt-[170px] "
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={handleCloseSs} // Clicking on the background will close the modal
+              >
+                <motion.div
+                  ref={screenshotRef}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 20,
+                    duration: 1,
+                  }}
+                  className="relative w-full rounded overflow-hidden max-h-screen"
+                  onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside
+                >
+                  {/* Close Button */}
+                  <button
+                    className="absolute md:top-6 md:right-3 top-5 right-2 bg-[#303030] hover:bg-[#464646] transition-colors duration-200 text-white md:px-3 md:py-1 px-2 py-1 rounded"
+                    onClick={handleCloseSs}
+                  >
+                    <i className="ri-close-large-fill"></i>
+                  </button>
+
+                  {/* Screenshot Image */}
+                  <img
+                    src={
+                      selectedScreenshot?.file_path
+                        ? `${configImageData}${selectedScreenshot.file_path}`
+                        : notAvailable
+                    }
+                    alt={`Screenshot`}
+                    className="w-full object-cover "
+                  />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <div className="font-medium cursor-auto pt-4 lg:text-4xl md:text-3xl sm:text-2xl text-xl">
             Cast{creditsData?.cast?.length === 0 && ":"}{" "}
             <span className="font-light">
               {creditsData?.cast?.length === 0 && "N/A"}
@@ -568,7 +751,7 @@ const Details = () => {
               ))}
             </div>
 
-            {/* Full-Screen View */}
+            {/* Full-Screen View cast */}
             <AnimatePresence>
               {selectedCast && (
                 <motion.div
@@ -614,6 +797,31 @@ const Details = () => {
                 </motion.div>
               )}
             </AnimatePresence>
+          </div>
+          {/* reviews */}
+          <div className="reviews-container bg-[#1a1a1a] pt-2 overflow-hidden rounded-md md:w-[90%] w-full flex flex-col items-center p-2">
+            <h2 className="font-medium cursor-auto lg:text-4xl md:text-3xl sm:text-2xl text-xl mb-2 px-3">
+              Reviews
+            </h2>
+            {reviews.length > 0 ? (
+              <div className="overflow-y-auto max-h-[400px] space-y-4  scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+                {reviews.map((review) => (
+                  <div key={review.id} className="bg-[#2a2a2a] p-3 rounded-md">
+                    <h3 className="text-yellow-400 font-semibold">
+                      {review.author}
+                    </h3>
+                    <p className="text-gray-300 md:text-base text-sm text-wrap">
+                      {review.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="dark:text-[#adadad]  text-[#636363] transition-colors duration-300">
+                No reviews available
+                <i className="ri-emotion-sad-fill"></i>
+              </p>
+            )}
           </div>
         </div>
       </div>
