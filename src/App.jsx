@@ -130,7 +130,7 @@ function App() {
   );
 
   return (
-    <div className="font-poppins dark:bg-[#151515] bg-white dark:text-white text-black transition-all duration-300">
+    <div className="font-poppins dark:bg-[#000000] bg-white dark:text-white text-black transition-all duration-300">
       <RouterProvider router={router}>
         <ScrollToTop />
       </RouterProvider>

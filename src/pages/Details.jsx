@@ -273,7 +273,7 @@ const Details = () => {
 
   return (
     <div className={`${recommededData?.length > 0 ? "pb-12" : "pb-0"}`}>
-      <div className="md:pt-[80px] pt-[70px] w-full min-h-screen flex flex-col px-2 relative bg-[#151515] dark:bg-[#151515] text-white pr-4 sm:pr-10 md:pr-4 lg:pr-0">
+      <div className="md:pt-[80px] pt-[70px] w-full min-h-screen flex flex-col px-2 relative dark:bg-[#000000] bg-[#1a1c21] text-white pr-4 sm:pr-10 md:pr-4 lg:pr-0 transition-colors duration-300">
         <div
           className={`absolute  inset-0 bg-black transition-all duration-300 min-h-screen ${
             dimMode ? "opacity-90 z-30" : "opacity-0 z-0"
@@ -799,25 +799,28 @@ const Details = () => {
             </AnimatePresence>
           </div>
           {/* reviews */}
-          <div className="reviews-container bg-[#1a1a1a] pt-2 overflow-hidden rounded-md md:w-[90%] w-full flex flex-col items-center p-2">
-            <h2 className="font-medium cursor-auto lg:text-4xl md:text-3xl sm:text-2xl text-xl mb-2 px-3">
+          <div className="reviews-container transition-colors duration-300 dark:bg-[#1a1a1a] bg-[#ffffff] pt-2 overflow-hidden rounded-md md:w-[90%] w-full flex flex-col items-center p-2 mb-4">
+            <h2 className="dark:text-white transition-colors duration-300 text-black font-medium cursor-auto lg:text-4xl md:text-3xl sm:text-2xl text-xl mb-2 px-3">
               Reviews
             </h2>
             {reviews.length > 0 ? (
               <div className="overflow-y-auto max-h-[400px] space-y-4  scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
                 {reviews.map((review) => (
-                  <div key={review.id} className="bg-[#2a2a2a] p-3 rounded-md">
-                    <h3 className="text-yellow-400 font-semibold">
+                  <div
+                    key={review.id}
+                    className="dark:bg-[#2a2a2a] bg-[#eeeeee] transition-colors duration-300 p-3 rounded-md"
+                  >
+                    <h3 className="dark:text-yellow-400 text-yellow-700 font-semibold transition-colors duration-300">
                       {review.author}
                     </h3>
-                    <p className="text-gray-300 md:text-base text-sm text-wrap">
+                    <p className="dark:text-gray-300 text-black md:text-base text-sm text-wrap transition-colors duration-300">
                       {review.content}
                     </p>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="dark:text-[#adadad]  text-[#636363] transition-colors duration-300">
+              <p className="dark:text-[#adadad] text-[#636363] transition-colors duration-300">
                 No reviews available
                 <i className="ri-emotion-sad-fill"></i>
               </p>

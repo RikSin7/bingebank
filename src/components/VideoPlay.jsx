@@ -81,7 +81,7 @@ function VideoPlay({
 
   return (
     <div
-      className="video-container fixed top-1/2 -translate-y-1/2 w-full sm:w-2/3 lg:w-1/2 z-50 left-1/2 -translate-x-1/2"
+      className="video-container fixed top-1/2 -translate-y-1/2 w-full sm:w-2/3 lg:w-2/3 z-50 left-1/2 -translate-x-1/2"
       onMouseEnter={() => setIsMouseOver(true)}
       onMouseLeave={() => setIsMouseOver(false)}
     >
@@ -100,7 +100,7 @@ function VideoPlay({
           }}
         >
           <iframe
-            className="h-[250px] sm:h-[300px] md:h-[350px] lg:h-[450px]"
+            className="h-[250px] sm:h-[300px] md:h-[350px] lg:h-[600px]"
             width="100%"
             height="100%"
             src={`https://www.youtube.com/embed/${videoKey}`}
