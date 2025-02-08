@@ -527,9 +527,7 @@ const Details = () => {
               Where to Watch?🍿{" "}
             </h2>
             <div className="flex flex-col items-center">
-              <div
-                className={`flex gap-4 flex-wrap justify-center`}
-              >
+              <div className={`flex gap-4 flex-wrap justify-center`}>
                 {providers?.length > 0 ? (
                   providers?.map((provider) => {
                     const providerUrls = {
@@ -802,16 +800,16 @@ const Details = () => {
               Reviews
             </h2>
             {reviews.length > 0 ? (
-              <div className="overflow-y-auto max-h-[400px] space-y-4  scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+              <div className="overflow-y-auto max-h-[400px] w-full px-2 space-y-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
                 {reviews.map((review) => (
                   <div
                     key={review.id}
-                    className="dark:bg-[#2a2a2a] bg-[#eeeeee] transition-colors duration-300 p-3 rounded-md"
+                    className="dark:bg-[#2a2a2a] bg-[#eeeeee] transition-colors duration-300 p-3 rounded-md w-full"
                   >
-                    <h3 className="dark:text-yellow-400 text-yellow-700 font-semibold transition-colors duration-300">
+                    <h3 className="dark:text-yellow-400 text-yellow-700 font-semibold transition-colors duration-300 break-words">
                       {review.author}
                     </h3>
-                    <p className="dark:text-gray-300 text-black md:text-base text-sm text-wrap transition-colors duration-300">
+                    <p className="dark:text-gray-300 text-black md:text-base text-sm transition-colors duration-300 break-words whitespace-normal">
                       {review.content}
                     </p>
                   </div>
