@@ -273,7 +273,7 @@ const Details = () => {
 
   return (
     <div className={`${recommededData?.length > 0 ? "pb-12" : "pb-0"}`}>
-      <div className="md:pt-[80px] pt-[70px] w-full min-h-screen flex flex-col px-2 relative dark:bg-[#000000] bg-[#1a1c21] text-white pr-4 sm:pr-10 md:pr-4 lg:pr-0 transition-colors duration-300">
+      <div className="md:pt-[80px] pt-[70px] w-full min-h-screen flex flex-col px-2 relative dark:bg-[#000000] bg-[#1a1c21] text-white transition-colors duration-300">
         <div
           className={`absolute  inset-0 bg-black transition-all duration-300 min-h-screen ${
             dimMode ? "opacity-90 z-30" : "opacity-0 z-0"
@@ -526,11 +526,9 @@ const Details = () => {
             <h2 className="md:text-3xl text-2xl xxs:text-xl font-bold font-jose py-2 lg:py-6">
               Where to Watch?🍿{" "}
             </h2>
-            <div className="flex flex-col items-center  pr-0">
+            <div className="flex flex-col items-center">
               <div
-                className={`flex gap-4 ${
-                  providers.length > 2 ? "flex-wrap" : "flex-nowrap"
-                } justify-center`}
+                className={`flex gap-4 flex-wrap justify-center`}
               >
                 {providers?.length > 0 ? (
                   providers?.map((provider) => {
@@ -614,7 +612,7 @@ const Details = () => {
               <h1 className="lg:text-4xl md:text-3xl sm:text-2xl text-xl mb-4 font-medium">
                 Screenshots
               </h1>
-              <div className="relative w-full">
+              <div className="relative w-full pr-4 sm:pr-8 md:pr-0">
                 <div className="md:w-[90%] w-full flex justify-center rounded-xl">
                   <div
                     ref={sliderRef}
@@ -712,7 +710,7 @@ const Details = () => {
           </div>
           <div>
             {/* Cast Grid */}
-            <div className="cast md:w-[90%] my-4 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-4 justify-center">
+            <div className="cast md:w-[90%] my-4 pr-2 sm:pr-8 md:pr-0 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-4 justify-center">
               {creditsData?.cast?.slice(0, 20).map((cast, index) => (
                 <motion.div
                   key={cast.id}
@@ -799,7 +797,7 @@ const Details = () => {
             </AnimatePresence>
           </div>
           {/* reviews */}
-          <div className="reviews-container transition-colors duration-300 dark:bg-[#1a1a1a] bg-[#ffffff] pt-2 overflow-hidden rounded-md md:w-[90%] w-full flex flex-col items-center p-2 mb-4">
+          <div className="reviews-container transition-colors duration-300 dark:bg-[#1a1a1a] bg-[#ffffff] pt-2 overflow-hidden rounded-md md:w-[90%] w-full justify-center flex flex-col items-center p-2 mb-4 -ml-1 md:ml-0">
             <h2 className="dark:text-white transition-colors duration-300 text-black font-medium cursor-auto lg:text-4xl md:text-3xl sm:text-2xl text-xl mb-2 px-3">
               Reviews
             </h2>
