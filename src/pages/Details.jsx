@@ -286,11 +286,11 @@ const Details = () => {
           <i className="ri-arrow-go-back-fill"></i>
         </button>
         <div className="relative w-full h-full lg:-mt-[80px]">
-          <div className="grid grid-cols-1 overflow-hidden w-full h-full">
+          <div className="grid grid-cols-1 overflow-hidden w-full h-full text-center">
             <img
               src={
                 detailsData?.poster_path
-                  ? `${configImageData}${detailsData?.backdrop_path}`
+                  ? `${configImageData}w1280${detailsData?.backdrop_path}`
                   : "https://via.placeholder.com/300"
               }
               alt={detailsData?.title || detailsData?.name}
@@ -300,11 +300,11 @@ const Details = () => {
           <div className="absolute lg:w-[90%] w-full left-1/2 -translate-x-1/2 inset-0 bg-gradient-to-b from-transparent to-black opacity-80" />
         </div>
         <div className="poster md:pl-[10vw] sm:pl-[4vw] pl-[2vw] md:-mt-[200px] -mt-[100px] z-20">
-          <div className="flex gap-4 w-full">
+          <div className="flex gap-4 w-full text-center">
             <img
               src={
                 detailsData?.poster_path
-                  ? `${configImageData}${detailsData?.poster_path}`
+                  ? `${configImageData}w500${detailsData?.poster_path}`
                   : notAvailable
               }
               alt={detailsData?.title || detailsData?.name}
@@ -571,7 +571,7 @@ const Details = () => {
                             scale: 1,
                             transition: { duration: 0.2 },
                           }}
-                          src={`https://image.tmdb.org/t/p/w300${provider?.logo_path}`}
+                          src={`https://image.tmdb.org/t/p/w154${provider?.logo_path}`}
                           alt={provider?.provider_name}
                           className="lg:w-14 lg:h-14 w-12 h-12 rounded-full"
                         />
@@ -634,9 +634,10 @@ const Details = () => {
                             scale: 1,
                             transition: { duration: 0.2 },
                           }}
-                          src={`https://image.tmdb.org/t/p/original/${screenshot?.file_path}`}
+                          src={`https://image.tmdb.org/t/p/w500${screenshot?.file_path}`}
                           alt={`Screenshot ${index + 1}`}
                           className="w-full h-auto rounded-xl z-10 cursor-pointer"
+                          loading="lazy"
                         />
                       </div>
                     ))}
@@ -689,11 +690,11 @@ const Details = () => {
                   <img
                     src={
                       selectedScreenshot?.file_path
-                        ? `${configImageData}${selectedScreenshot.file_path}`
+                        ? `${configImageData}w1280${selectedScreenshot.file_path}`
                         : notAvailable
                     }
                     alt={`Screenshot`}
-                    className="w-full object-cover "
+                    className="w-full object-cover"
                   />
                 </motion.div>
               </motion.div>
@@ -731,7 +732,7 @@ const Details = () => {
                     onMouseOut={() => handleMouseLeaveCast(index)}
                     src={
                       cast?.profile_path
-                        ? `${configImageData}${cast.profile_path}`
+                        ? `${configImageData}w154${cast.profile_path}`
                         : notAvailable
                     }
                     alt={cast?.name}
@@ -778,7 +779,7 @@ const Details = () => {
                     <img
                       src={
                         selectedCast.profile_path
-                          ? `${configImageData}${selectedCast.profile_path}`
+                          ? `${configImageData}w500${selectedCast.profile_path}`
                           : notAvailable
                       }
                       alt={selectedCast.name}

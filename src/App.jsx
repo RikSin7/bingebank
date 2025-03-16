@@ -92,7 +92,7 @@ function App() {
   // Fetch configuration data
   useFetchTMDB(
     "/configuration",
-    (data) => data.images.secure_base_url + "original",
+    (data) => data.images.secure_base_url,
     setConfigImageData
   );
   // Fetch trending data

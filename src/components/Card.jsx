@@ -9,6 +9,8 @@ import SkeletonCard from "./SkeletonCard";
 function Card({ data = [], heading, media_type, id }) {
   const [isTrendingClicked, setIsTrendingClicked] = useState(false);
 
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   const loading = useSelector((state) => state.bingebank.loading);
   const [delayedLoading, setDelayedLoading] = useState(true);
 
@@ -176,15 +178,31 @@ function Card({ data = [], heading, media_type, id }) {
                 >
                   <div className="transition-all duration-300 ease-in-out scroll-smooth mx-auto overflow-hidden rounded-lg  border border-[#000000] dark:border-[#999999]">
                     <div
-                      className={`max-w-[240px] aspect-[2/3] cursor-pointer rounded-lg transition-transform duration-500 ease-in-out md:hover:scale-[1.1] relative`}
+                      className={`max-w-[240px] aspect-[2/3] cursor-pointer rounded-lg transition-transform duration-500 ease-in-out md:hover:scale-[1.1] relative text-center`}
                       key={content.id}
                     >
                       {content?.poster_path ? (
-                        <img
-                          src={`${configImageData}${content?.poster_path}`}
-                          alt={content?.title || content?.name}
-                          className="w-full h-full object-cover"
-                        />
+                        <>
+                          {/* Low Quality image */}
+                          <img
+                            src={`${configImageData}w92${content?.poster_path}`}
+                            alt={content?.title || content?.name}
+                            className={`absolute inset-0 blur-md transition-opacity duration-500 w-full h-full object-cover  ${
+                              imageLoaded ? "opacity-0" : "opacity-100"
+                            }`}
+                            loading="lazy"
+                          />
+                          {/* High Quality image */}
+                          <img
+                            src={`${configImageData}w300${content?.poster_path}`}
+                            alt={content?.title || content?.name}
+                            className={`w-full h-full object-cover transition-opacity duration-500  ${
+                              imageLoaded ? "opacity-100" : "opacity-0"
+                            }`}
+                            loading="lazy"
+                            onLoad={() => setImageLoaded(true)}
+                          />
+                        </>
                       ) : (
                         <img
                           src={notAvailable}

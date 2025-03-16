@@ -68,7 +68,7 @@ const movieSlice = createSlice({
     },
     setGenreType: (state, action) => {
       state.genreType = action.payload;
-      state.error = null; 
+      state.error = null;
       state.loading = false;
     },
     setSearchInput: (state, action) => {

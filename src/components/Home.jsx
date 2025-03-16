@@ -20,6 +20,8 @@ function Home() {
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -85,20 +87,44 @@ function Home() {
               }}
             >
               <div className="h-full w-full">
+                {/* Low Quality Image placeholder */}
                 <img
                   src={
                     content?.poster_path || content?.backdrop_path
                       ? imgURL +
                         (isMobile
-                          ? content?.poster_path
-                          : content?.backdrop_path)
+                          ? `w92${content?.poster_path}`
+                          : `w300${content?.backdrop_path}`)
                       : null
                   }
                   alt={content?.title || content?.name}
-                  className="w-full h-full object-cover flex-shrink-0"
+                  className={`absolute inset-0 blur-md transition-opacity duration-500 w-full h-full object-cover flex-shrink-0 ${
+                    imageLoaded ? "opacity-0" : "opacity-100"
+                  }`}
                   style={{
                     userSelect: "none",
                   }}
+                  loading="lazy"
+                />
+                {/* High Quality Image */}
+                <img
+                  src={
+                    content?.poster_path || content?.backdrop_path
+                      ? imgURL +
+                        (isMobile
+                          ? `w500${content?.poster_path}`
+                          : `w1280${content?.backdrop_path}`)
+                      : null
+                  }
+                  alt={content?.title || content?.name}
+                  className={`w-full h-full object-cover flex-shrink-0 transition-opacity duration-500 ${
+                    imageLoaded ? "opacity-100" : "opacity-0"
+                  }`}
+                  style={{
+                    userSelect: "none",
+                  }}
+                  loading="lazy"
+                  onLoad={() => setImageLoaded(true)}
                 />
               </div>
               <div className="absolute inset-0 bg-[radial-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.8))]" />
@@ -178,10 +204,10 @@ function Home() {
 
       <Card data={bannerData} heading="Trending" />
       <Card data={topRatedData} heading="Top Rated" media_type="movie" />
-      <Card data={nowPlayingData} heading="Now Playing" media_type="movie" />
-      <Card data={tvSeriesData} heading="Popular Shows" media_type="tv" />
-      <Card data={bollywoodData} heading="Bollywood" media_type="movie" />
-      <Card data={hollywoodData} heading="Hollywood" media_type="movie" />
+        <Card data={nowPlayingData} heading="Now Playing" media_type="movie" />
+        <Card data={tvSeriesData} heading="Popular Shows" media_type="tv" />
+        <Card data={bollywoodData} heading="Bollywood" media_type="movie" />
+        <Card data={hollywoodData} heading="Hollywood" media_type="movie" />
     </div>
   );
 }

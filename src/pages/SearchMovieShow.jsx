@@ -160,10 +160,10 @@ function SearchMovieShow() {
                   onMouseLeave={() => setHoveredItemId(null)}
                   onClick={() => handleImageClick(content)}
                 >
-                  <div className="relative cursor-pointer overflow-hidden rounded-lg aspect-[2/3] border border-[#000000] dark:border-[#999999] transition-all duration-300">
+                  <div className="relative cursor-pointer overflow-hidden rounded-lg aspect-[2/3] border border-[#000000] dark:border-[#999999] transition-all duration-300 text-center">
                     {content?.poster_path ? (
                       <img
-                        src={`${configImageData}${content?.poster_path}`}
+                        src={`${configImageData}w300${content?.poster_path}`}
                         alt={content?.title || content?.name}
                         className="w-full h-full object-cover"
                       />
