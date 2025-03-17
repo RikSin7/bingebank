@@ -308,7 +308,7 @@ const Details = () => {
                   : notAvailable
               }
               alt={detailsData?.title || detailsData?.name}
-              className="xl:w-[350px] lg:w-[300px] md:w-[250px] sm:w-[220px] w-[170px] h-[300px] object-cover sm:h-[370px] md:h-[400px] xl:h-[550px] lg:h-[500px] mx-auto rounded-lg xxs:w-[120px] xxs:h-[240px]"
+              className="xl:min-w-[350px] lg:min-w-[300px] md:min-w-[250px] sm:min-w-[220px] min-w-[170px] h-[300px] object-cover sm:h-[370px] md:h-[400px] xl:h-[550px] lg:h-[500px] mx-auto rounded-lg xxs:min-w-[120px] xxs:h-[240px]"
               style={{
                 boxShadow: "0 0 10px rgba(255, 255, 255, 0.6)",
               }}
@@ -634,7 +634,7 @@ const Details = () => {
                             scale: 1,
                             transition: { duration: 0.2 },
                           }}
-                          src={`https://image.tmdb.org/t/p/w500${screenshot?.file_path}`}
+                          src={`${configImageData}w1280${screenshot?.file_path}`}
                           alt={`Screenshot ${index + 1}`}
                           className="w-full h-auto rounded-xl z-10 cursor-pointer"
                           loading="lazy"
@@ -658,6 +658,7 @@ const Details = () => {
           <AnimatePresence>
             {selectedScreenshot && (
               <motion.div
+                key={selectedScreenshot.file_path + Date.now()}
                 className="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-90 sm:pt-[170px] "
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -732,7 +733,7 @@ const Details = () => {
                     onMouseOut={() => handleMouseLeaveCast(index)}
                     src={
                       cast?.profile_path
-                        ? `${configImageData}w154${cast.profile_path}`
+                        ? `${configImageData}w500${cast.profile_path}`
                         : notAvailable
                     }
                     alt={cast?.name}
@@ -749,9 +750,10 @@ const Details = () => {
             </div>
 
             {/* Full-Screen View cast */}
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               {selectedCast && (
                 <motion.div
+                  key={selectedCast.id}
                   className="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-90 pt-[170px]"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

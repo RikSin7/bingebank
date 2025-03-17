@@ -1,3 +1,8 @@
+// Apply dark mode before React mounts
+if (localStorage.getItem("theme") === "dark") {
+  document.documentElement.classList.add("dark");
+}
+
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { Provider } from "react-redux";
